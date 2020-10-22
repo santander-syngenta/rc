@@ -69,13 +69,18 @@
     </ul>
       <form class="form-inline" style="justify-content: center;">
         <input id="searchBar" class="form-control mr-sm-2" placeholder="Search..." aria-label="Search">
-        <button type="button" onClick="searchBtn()" id="searchBtn" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+        <a id="searchRedirect">
+          <button type="button" onclick="searchSubmit()" id="searchBtn" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+        </a>
       </form>
   </div>
 </nav>
 </div>
 <script type="text/javascript">
-  function searchBtn(){
-    console.log("search started");
+  function searchSubmit(){
+    var form = document.getElementById('searchBar').value;
+    var url = `http://127.0.0.1:8080/search/${form}`;
+    document.getElementById('searchRedirect').href = url;
   }
+  
 </script>

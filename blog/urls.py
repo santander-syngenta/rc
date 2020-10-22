@@ -9,5 +9,6 @@ urlpatterns = [
 	path('train/', views.training, name = 'training'),
 	path('methods2/', views.methods2, name= 'methods2'),
 	path('display/<str:pk>/', views.display, name='display'),
-	path('tagDB/', views.tagDB, name = 'tagDB')
+	path('tagDB/', views.tagDB, name = 'tagDB'),
+	path('search/<str:pk>/', views.search, name = 'search'),
 ]

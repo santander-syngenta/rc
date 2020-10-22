@@ -42,6 +42,10 @@ def blog(request):
 	return HttpResponse('This will be the blog')
 
 
+def search(request, pk):
+	context = {'pk':pk}
+	return render(request, 'blog/search.html', context)
+
 
 
 
