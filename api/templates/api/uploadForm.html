@@ -1,0 +1,58 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+<link rel="stylesheet" href="/path/to/select2.css">
+<link rel="stylesheet" href="/path/to/select2-bootstrap4.css">
+
+<style>
+	.main{
+		justify-content: center;
+		width:90%;
+		margin-top:30px;
+	}
+	p{
+		display: inline-flex;
+		justify-content: space-between;
+		margin:30px;
+	}
+	label{
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+	.custom{
+		width: 90%;
+		display: flex;
+		justify-content: center;
+		border-radius: 25px;
+		border-color: #2e612f;
+		border-width: 2px;
+	}
+</style>
+
+
+<div class = "card card-body custom main mx-auto">
+	<form action='' method='POST' enctype = "multipart/form-data">
+		{% csrf_token %}
+		{{form.as_p}}
+
+
+		<input class="btn btn-primary btn-lg" type="submit" name="Upload" value ="Upload">
+	</form>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#id_tag').select2();
+	})
+	$('select').select2({
+    	theme: 'bootstrap4',
+	});
+</script>
+
+
+{% endblock %}
+

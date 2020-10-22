@@ -1,0 +1,22 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<br>
+<br>
+
+<div class="container">
+	<iframe id="frame" width='100%' height='600px' frameborder='0'></iframe>
+</div>
+
+
+<script type="text/javascript">
+	fetch("{{url}}")
+	.then((resp) => resp.json())
+	.then(function(data){
+		document.getElementById("frame").src = '/static'+ data.file;
+	})
+
+</script>
+
+{% endblock %}

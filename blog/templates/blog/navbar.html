@@ -1,0 +1,81 @@
+{% load static %}
+
+<style type="text/css">
+  nav{
+    background-color:#2e612f !important;
+    border:3px solid  #8d8299;
+    border-bottom-right-radius:25px;
+    border-bottom-left-radius:25px;
+  }
+  .white{
+    color:#fff !important;
+  }
+  .dropdown-item{
+    color: black !important;
+  }
+  .navbar-nav, a{
+    text-align: center;
+    justify-content: center;
+  }
+  li{
+    padding-left:10px;
+    padding-right:10px;
+    border: 1px #fff;
+  }
+  #topDiv{
+    border:3px solid  #8d8299;
+  }
+  a > img{
+    padding-left: 50px;
+    display: block;
+    height: 70px;
+  }
+  li > a{
+    font-size: 1.3rem;
+    font-family: Rockwell, "Courier New", Courier, Georgia,
+                 Times, "Times New Roman", serif;
+    text-decoration: underline;
+  }
+</style>
+
+<div id = "navDiv">
+  <nav id = "nav" class="navbar navbar-expand-lg navbar-light shadow mx-auto">
+  <a id = 'brand' class="navbar-brand white" href="#" style="text-decoration: underline;"><img id='brand' src="{% static 'images/logo4.png' %}" style=></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border-color:white;color:white;">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item active" id="home">
+        <a class="nav-link white" href="{% url 'blog:home' %}">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link white" href="{% url 'blog:methods2'%}">Methodology</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link white" href="{% url 'blog:training' %}">CPFD Resources</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link white" href="{% url 'blog:methods2'%}">Training</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle white" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'blog:links' %}">Forms</a>
+          <a class="dropdown-item" href="{% url 'blog:tagDB' %}">Tags</a>
+        </div>
+      </li>
+    </ul>
+      <form class="form-inline" style="justify-content: center;">
+        <input id="searchBar" class="form-control mr-sm-2" placeholder="Search..." aria-label="Search">
+        <button type="button" onClick="searchBtn()" id="searchBtn" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+      </form>
+  </div>
+</nav>
+</div>
+<script type="text/javascript">
+  function searchBtn(){
+    console.log("search started");
+  }
+</script>

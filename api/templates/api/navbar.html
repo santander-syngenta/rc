@@ -1,0 +1,38 @@
+{% load static %}
+
+<style type="text/css">
+  nav{
+    background-color:#2e612f;
+  }
+  a, li{
+    color:#fff !important;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light border-btm border-dark rounded-bottom shadow">
+  <a class="navbar-brand" href="#" style="text-decoration: underline;">CPFD Resource Center<i class='fas fa-seedling'></i></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'training' %}">Training</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'methods2'%}">Methodology</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resources
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'links' %}">Forms</a>
+          <a class="dropdown-item" href="{% url 'links' %}">Links</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

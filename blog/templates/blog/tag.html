@@ -1,0 +1,346 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	.custom{
+		width: auto;
+		background-color: #fff;
+		justify-content: center;
+		display: flex;
+		background-color: #829986;
+		color:white;
+		border-radius: 25px;
+		text-decoration: underline;
+		border-color: #fff;
+		border-width: 4px;
+	}
+	table{
+		width:90%;
+	}
+	.custom1{
+		width: 90%;
+		display: flex;
+		justify-content: center;
+		border-radius: 25px;
+		border-color: #2e612f;
+		border-width: 2px;
+	}
+	th, .header{
+		background-color: #829986;
+		color: white;
+		text-align: center;
+		border: 1px black;
+	}
+	td {
+		text-align: center;
+	}
+	a {
+		color:black !important;
+	}
+	{box-sizing: border-box;}
+
+	/* The popup form - hidden by default */
+	.form-popup {
+	  display: none;
+	  position: fixed;
+	  bottom: 0;
+	  right: 15px;
+	  border: 3px solid #f1f1f1;
+	  z-index: 9;
+	}
+
+	/* Add styles to the form container */
+	.form-container {
+	  max-width: 600px;
+	  padding: 10px;
+	  background-color: white;
+	}
+
+	/* Full-width input fields */
+	.form-container input[type=text], .form-container input[type=password] {
+	  width: 100%;
+	  padding: 15px;
+	  margin: 5px 0 22px 0;
+	  border: none;
+	  background: #f1f1f1;
+	}
+
+	/* Set a style for the submit/login button */
+	.form-container .btn {
+	  background-color: DodgerBlue;
+	  color: white;
+	  padding: 16px 20px;
+	  border: none;
+	  cursor: pointer;
+	  width: 100%;
+	  margin-bottom:10px;
+	  opacity: 0.8;
+	}
+
+	/* Add a red background color to the cancel button */
+	.form-container .cancel {
+	  background-color: red;
+	}
+
+	/* Add some hover effects to buttons */
+	.form-container .btn:hover, .open-button:hover {
+	  opacity: 1;
+	}
+	.head{
+		padding-top:.5rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: .5rem;
+		text-align: center;
+	}
+</style>
+
+</br>
+<div class="row">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body shadow head">
+			<h2>Tag Search, Update, & Delete</h2>
+		</div>
+	</div>
+</div>
+<br/>
+<div class="card card-body custom1 mx-auto shadow">
+	<div class = "card card-body">
+		<div style="display: flex">
+			<div style="flex:7">
+				<input id="search-input" class="form-control" type="text" placeholder="Begin typing to search through tags!">
+			</div>
+			<div style="flex:1; justify-content: right; padding-left:20px;">
+				<button id = 'newTag' onClick="openForm2()" class="btn btn-warning">Add New File</button>
+			</div>			
+		</div>
+	</div>
+
+	<table class="table table-striped">
+		<tr>
+			<th data-column="title" data-order="desc">Document Title &#9650</th>
+			<td class = "header">Update Title</td>
+			<td class = "header">Delete</td>
+		</tr>
+
+		<tbody id="myTable">
+
+		</tbody>
+	</table>
+
+	<div class="form-popup" id="myForm">
+		<form method = 'get' class="form-container">
+			<h1>Update</h1>
+			
+			<label ><b>Title: </b></label>
+			<input type="text" id="titleUpdate" required>
+
+			<button id = "submitUpdate" type="submit" class="btn">Submit</button>
+			<button type="submit" class="btn cancel" onClick="closeForm()">Close</button>
+		</form>
+	</div>
+
+	<div class="form-popup" id="myForm2">
+		<form id = "form2" class="form-container">
+			<h1>Make New Tag</h1>
+			
+			<label ><b>Tag-Title: </b></label>
+			<input type="text" id="name" required>
+
+			<input id = "submitTag" type="submit" class="btn" value="Submit">
+			<button class="btn cancel" onClick="closeForm2()">Close</button>
+		</form>
+	</div>
+</div>	
+
+<script type="text/javascript">
+	function getCookie(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+
+	const csrftoken = getCookie('csrftoken');
+	var activeItem = null;
+	var html = null;
+	var listSnapshot = [];
+	var myData = null
+
+	function buildTable(data){
+		var table = document.getElementById('myTable');
+		table.innerHTML= ''
+		for (var i =0; i < data.length; i++) {
+			try{
+				document.getElementById(`data-row-${i}`).remove();
+			} catch(err){
+
+			}
+			var row = `
+				<tr id = "data-row-${i}">
+					<td>${data[i].name}</td>
+					<td><button class="btn btn-sm btn-outline-info edit">Edit</button></td>
+					<td><button class="btn btn-sm btn-outline-danger delete">Delete</button></td>
+				</tr>
+			`
+			table.innerHTML += row
+		}
+		for (var i=0; i < data.length; i++){
+			editBtn = document.getElementsByClassName('edit')[i];
+			deleteBtn = document.getElementsByClassName('delete')[i];
+
+			editBtn.addEventListener('click',(function(item){
+				return function(){
+					editItem(item);
+				}
+			})(myData[i]));
+			deleteBtn.addEventListener('click', (function(item){
+				return function(){
+					deleteItem(item);
+				}
+			})(myData[i]));
+		}
+		listSnapshot = data 
+	}
+
+
+	function editItem(item){
+		activeItem = item;
+		document.getElementById('titleUpdate').value = activeItem.name;
+		openForm();
+	}
+
+	function closeForm2(){
+		document.getElementById('myForm2').style.display = "none";
+	}
+
+	function openForm2(){
+		document.getElementById('myForm2').style.display = "block";
+		submitBtn = document.getElementById('submitTag');
+		submitBtn.addEventListener('click', function(e){
+			var name = document.getElementById('name').value;
+			var url = `http://127.0.0.1:8080/api/tag-create/`
+			console.log(name, url);
+			fetch(url, {
+				method:'POST',
+				headers:{
+					'Content-type':'application/json',
+					'X-CSRFToken':csrftoken,
+				},
+				body:JSON.stringify({'name':name})
+			}).then(function(response){
+				document.getElementById('form2').reset();
+			})
+		})
+	}
+
+	function openForm() {
+		document.getElementById('myForm').style.display = "block";
+  		submitBtn = document.getElementById('submitUpdate');
+  		submitBtn.addEventListener('click',function(e){
+  			e.preventDefault();
+  			var title = document.getElementById('titleUpdate').value;
+  			var url = `http://127.0.0.1:8080/api/tag-update/${activeItem.id}/`;
+  			console.log(title, url);
+  			fetch(url, {
+  				method:'POST',
+  				headers:{
+					'Content-type':'application/json',
+					'X-CSRFToken':csrftoken,
+				},
+				body:JSON.stringify({'name':title})
+  			}).then(function(response){
+  				closeForm();
+  				startBuild();
+  			})
+  		});
+  		document.getElementById('submitUpdate').addEventListener('click',function(e){
+  			closeForm();
+  		});
+	}
+
+	function closeForm() {
+		document.getElementById('myForm').style.display = "none";
+	}
+
+	function searchTable(value, data){
+		var filteredData = []
+		for (var i =0; i < data.length; i++){
+			value = value.toLowerCase()
+			var title = data[i].name.toLowerCase()
+			if (title.includes(value)){
+				filteredData.push(data[i]);
+			}
+		}
+
+		return filteredData
+	}
+
+	function startBuild(){
+		var url = "http://127.0.0.1:8080/api/tag-list/"
+		fetch(url)
+		.then((resp) => resp.json())
+		.then(function(data) {
+			myData = data;
+			buildTable(myData);
+		});
+	}
+
+	function deleteItem(item){
+		console.log("Deleting: ", item);
+		var url = `http://127.0.0.1:8080/api/tag-delete/${item.id}/`
+		fetch(url, {
+			method:'DELETE',
+			headers:{
+				'Content-type':'application/json',
+				'X-CSRFToken':csrftoken,
+			}
+		}).then(function(response){
+			startBuild();
+		})
+	}
+
+	startBuild();
+
+	let items = document.getElementsByTagName('th')
+	for (let i of items){
+		i.addEventListener('click', function(e){
+			var column = e.target.dataset.column;
+			var order = e.target.dataset.order;
+			var text = e.target.innerHTML;
+			text = text.substring(0, text.length - 1);
+			console.log(text);
+
+			if(order == 'desc'){
+				e.target.dataset.order = "asc";
+				text += '&#9660';
+				myData = myData.sort((a,b) => a[column] > b[column] ? 1:-1);
+			} else{
+				e.target.dataset.order = "desc";
+				text += '&#9650';
+				myData = myData.sort((a,b) => a[column] < b[column] ? 1:-1);
+			}
+			e.target.innerHTML = text;
+			buildTable(myData);
+		})
+	}
+
+	var type = document.getElementById('search-input');
+	type.addEventListener('keyup', function(e){
+		var value = e.target.value
+		var data = searchTable(value, myData);
+		buildTable(data);
+	});
+</script>
+
+{% endblock %}

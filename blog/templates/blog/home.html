@@ -1,0 +1,59 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+	.container{
+		background-color:#e7f2d0;
+	}
+	p, h5{
+		color:#fff;
+	}
+	.flex-container{
+		display: flex;
+	}
+	.flex-container > div {
+	  width:90%;
+	  margin: 30px;
+	  text-align: center;
+	  justify-content: center;
+	  line-height: 75px;
+	  font-size: 1.5rem;
+	  color: #fff;
+	  border: outset;
+	  flex: 1;
+	}
+	#topDiv{
+		background-color:#fae8ff;
+		margin:0px;
+	}
+	.img-wrapper{
+		justify-content: center;
+		padding:0px;
+		background-color: #fff;
+	}
+</style>
+<hr>
+<div style="width:98%; justify-content: center;">
+	<div class = "flex-container">
+		<a class="href" href="{% url 'blog:methods2' %}">
+			<img src="{% static 'images/train2.png' %}" class="img-fluid mx-auto d-block">
+		</a>
+		<a class="href" href="{% url 'blog:methods2' %}">
+			<img src="{% static 'images/method2.png' %}" class="img-fluid mx-auto d-block">
+		</a>
+		<a class="href" href="{% url 'blog:links' %}">
+			<img src="{% static 'images/links2.png' %}" class="img-fluid mx-auto d-block">
+		</a>
+	</div>
+</div>
+<script type="text/javascript">
+	var navBar = document.getElementById('navDiv').innerHTML;
+	var newBar = `
+		<div>
+			${navBar}
+		</div>`
+	document.getElementById('navDiv').innerHTML = newBar;
+	document.getElementById('home').remove();
+</script>
+{% endblock %}
