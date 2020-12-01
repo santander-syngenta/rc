@@ -1,0 +1,39 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	.custom{
+		width: auto;
+		justify-content: center;
+		display: flex;
+		background-color: #526927;
+		color:white;
+		border-radius: 15px;
+		border-color: #fff;
+		border-width: 2px;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
+	}
+	.head > h3{
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+    	text-decoration: underline;
+	}
+</style>
+<hr>
+<div class="row" style="line-height: 70%">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body head shadow" style="line-height: 70%">
+			<h3>CPFD Forms</h3>
+		</div>
+	</div>
+</div>
+<br>
+
+
+{% endblock %}

@@ -15,17 +15,34 @@
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </head>
+<style>
+	footer{
+		position: absolute;
+		bottom:0;
+		width:100%;
+		color: black;
+		justify-content: center;
+		height: 8rem;
+		font-weight: 700;
+		line-height: 0; 
+	}
+	body{
+		position: relative;
+		min-height: 100vh;
+		padding-bottom: 8rem;
+	}
+</style>
 
-<body style="background-color:#e0fffb;">
+<body style="background-color:#d5dec5;">
 	{% include 'blog/navbar.html' %}
 	{% block content %}
 
 
 	{% endblock %}
-	<hr>
-	<footer style="text-align: right;">
-		<p style="color:black !important;">Developed by North America Biological Data Analytics</p>
-		<img class="shadow" src="{% static 'images/logo.png' %}" height="50" alt="" style="display:inline;">
+	<footer style="text-align:center;">
+		<hr>
+		<p>Developed by North America Biological Data Analytics</p>
+		<img class="shadow" src="{% static 'images/logo.png' %}" height="50" alt="" style="display:block;margin-left: auto;margin-right: auto;">
 	</footer>
 </body>
 </html>

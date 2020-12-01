@@ -25,7 +25,7 @@ SECRET_KEY = '6r3@zvip_ug-$%7#&51rxsd$lb(23+09wo&0zo^69g+pet!3c$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'django-env.eba-wjrk4d3d.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = [ '127.0.0.1','localhost','172.20.57.135']
 
 
 # Application definition
@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
 
     'rest_framework',
+
+    'django.contrib.sites',
+    'microsoft_auth',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'microsoft_auth.context_processors.microsoft',
             ],
         },
     },
@@ -81,14 +85,19 @@ WSGI_APPLICATION = 'arm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'blog',
+        'NAME': 'resource_center',
         'USER': 'postgres',
-        'PASSWORD': 'helen123',
+        'PASSWORD': 'syngenta',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'microsoft_auth.backends.MicrosoftAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend' # if you also want to use Django's authentication
+    # I recommend keeping this with at least one database superuser in case of unable to use others
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -107,7 +116,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -131,3 +139,17 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+X_FRAME_OPTIONS = 'ALLOWALL'
+
+"""S3 Bucket Info"""
+AWS_ACCESS_KEY_ID = 'AKIAVH6CVLPU5G4AJTMX'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'cpfd.center'
+MAX_UPLOAD_SIZE = '2147483648'
+
+
+"""Microsoft Authentication"""
+SITE_ID = 1
+MICROSOFT_AUTH_CLIENT_ID = '87ede43f-aef0-442d-8525-bb037f559bce'
+MICROSOFT_AUTH_CLIENT_SECRET = 'n7y~AL4KFVGs75F_TK_ky-_Tf.7R509RmB'
+MICROSOFT_AUTH_LOGIN_TYPE = 'ma'

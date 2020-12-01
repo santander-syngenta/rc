@@ -1,0 +1,67 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	.container{
+		width:98%;
+		justify-content: center;
+		display:flex;
+		justify-content: center;
+	}
+	.href{
+		justify-content: center;
+		margin-left: 30px;
+		margin-right: 30px;
+		border: 3px solid  white;
+		outline: 3px solid #829986;
+	}
+	.custom{
+		width: auto;
+		justify-content: center;
+		display: flex;
+		background-color: #526927;
+		color:white;
+		border-radius: 15px;
+		text-decoration: underline;
+		border-color: #fff;
+		border-width: 2px;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
+	}
+	h3{
+    	font-family: Rockwell, "Courier New", Courier, Georgia,
+                 Times, "Times New Roman", serif;
+    	text-decoration: underline;
+	}
+</style>
+<hr>
+<div class="row">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body head shadow">
+			<h3>CPFD Resources</h3>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class = "container">
+	<a class="href shadow" href="{% url 'blog:links' %}">
+		<span>
+			<img src = "{% static 'images/quicklinks.png' %}" class = "img img-fluid mx-auto d-block">
+		</span>
+	</a>
+	<a class="href shadow" href="{% url 'blog:forms' %}">
+		<span>
+			<img src = "{% static 'images/forms.png' %}" class = "img img-fluid mx-auto d-block">
+		</span>
+	</a>
+</div>
+<br>
+
+{% endblock %}

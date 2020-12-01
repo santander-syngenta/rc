@@ -2,5 +2,197 @@
 {% load static %}
 {% block content %}
 
+<style type="text/css">
+	.container{
+		max-width: 85%;
+		padding-left: 0;
+		padding-right:0;
+		margin:0;
+		justify-content: center;
+	}
+	.href{
+		border: 2px solid #526927;
+		text-align: center;
+		margin-top: 1rem;
+		margin-right: 3rem;
+		margin-left: 3rem;
+		border-radius:15px;
+	}
+	.img{
+		min-width: 100%;
+		border-radius: 15px;
+	}
+	.custom{
+		width: auto;
+		justify-content: center;
+		display: flex;
+		background-color: #526927;
+		color:white;
+		border-radius: 15px;
+		text-decoration: underline;
+		border-color: #fff;
+		border-width: 2px;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
+	}
+	h3{
+    	font-family: Rockwell, "Courier New", Courier, Georgia,
+                 Times, "Times New Roman", serif;
+    	text-decoration: underline;
+	}
+	button{
+		padding:0;
+	}
+	.row{
+		line-height: 0;
+	}
+	#content_wrapper{
+		display: table;
+	}
+	.main{
+		width:95%;
+		justify-content: center;
+		border: 2px solid #2e612f;
+		padding-top:.5rem;
+		background-color: #fafff0;
+	}
+	.scroll::-webkit-scrollbar
+	{
+		background-color:#fafff0;
+	}
+
+	.scroll::-webkit-scrollbar-thumb
+	{
+		border-radius:5px;
+		background-color: #418c42;	
+		background-image: -webkit-linear-gradient(45deg,rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
+	}
+	.scroll::-webkit-scrollbar-track {
+    	box-shadow: inset 0 0 10px 10px #8d8299;
+    	border: solid 3px transparent;
+	}
+	.scroll{
+		overflow-x: scroll;
+		overflow-y: hidden;
+		white-space: nowrap;
+	}
+	span > h3{
+		color: #1a381b;
+		padding-left:2rem;
+	}
+</style>
+<hr>
+<div class="row">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body head shadow">
+			<h3>Training</h3>
+		</div>
+	</div>
+</div>
+<div class = "container mx-auto">
+	<div class = "row">
+		<div class = "col">
+			<button class="href shadow subject" id="BioAnalytics">
+				<span>
+					<img src = "{% static 'images/bioanalytics.png' %}" class = "img img-fluid mx-auto d-block">
+				</span>
+			</button>
+		</div>
+		<div class = "col">
+			<button class="href shadow subject" id="BioBalance">
+				<span>
+					<img src = "{% static 'images/biobalance.png' %}" class = "img img-fluid mx-auto d-block">
+				</span>
+			</button>
+		</div>
+		<div class = "col">
+			<button class="href shadow subject" id="BioDesign">
+				<span>
+					<img src = "{% static 'images/biodesign.png' %}" class = "img img-fluid mx-auto d-block">
+				</span>
+			</button>
+		</div>
+		<div class = "col">
+			<button class="href shadow subject" id="Workslate">
+				<span>
+					<img src = "{% static 'images/workslate2.png' %}" class = "img img-fluid mx-auto d-block" style="border:1;">
+				</span>
+			</button>
+		</div>
+	</div>
+	<div class = "row">
+		<div class = "col">
+			<button class="href shadow subject" id="BioPlan">
+				<span>
+					<img src = "{% static 'images/bioplan.png' %}" class = "img img-fluid mx-auto d-block" style="border:1;">
+				</span>
+			</button>
+		</div>
+		<div class = "col">
+			<button class="href shadow subject" id="ARM">
+				<span>
+					<img src = "{% static 'images/arm2.png' %}" class = "img img-fluid mx-auto d-block" style="border:1;">
+				</span>
+			</button>
+		</div>
+		<div class = "col">
+			<button class="href shadow subject" id="Smatrix">
+				<span>
+					<img src = "{% static 'images/smatrix.png' %}" class = "img img-fluid mx-auto d-block" style="border:1;">
+				</span>
+			</button>
+		</div>
+		<div class = "col">
+			<button class="href shadow subject" id="Regional Applications">
+				<span>
+					<img src = "{% static 'images/regional.png' %}" class = "img img-fluid mx-auto d-block" style="border:1;">
+				</span>
+			</button>
+		</div>
+	</div>
+</div>
+<div id="main">
+	
+
+</div>
+
+
+<script type="text/javascript">
+	var buttons = document.getElementsByClassName('subject');
+	for (var i=0; i<buttons.length; i++){
+		buttons[i].addEventListener('click', function(e){
+			buildTag(this.id);
+		})
+	}
+
+	function buildTag(subject){
+		console.log('Building for: ', subject);
+		var page = document.getElementById('main');
+		page.innerHTML = '';
+		content = `
+			<br>
+			<div class="card card-body main mx-auto shadow">
+				<div class="row scroll">
+					<span id="content-wrapper" style="display:inline;">
+						<h3>${subject}</h3>
+					</span>
+				</div>
+			</div>
+		`
+		page.innerHTML += content;
+		renderContent(subject);
+	}
+
+	function renderContent(subject){
+
+	}
+</script>
 
 {% endblock %}
+
+<iframe src="https://syngenta.sharepoint.com/sites/BDATeam/_layouts/15/Doc.aspx?sourcedoc={d38ad65a-7b17-41d8-8dc1-97d93a423cbd}&amp;action=embedview&amp;wdAr=1.3333333333333333" width="350px" height="286px" frameborder="0">This is an embedded <a target="_blank" href="https://office.com">Microsoft Office</a> presentation, powered by <a target="_blank" href="https://office.com/webapps">Office</a>.</iframe>

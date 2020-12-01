@@ -4,3 +4,5 @@ from .models import *
 
 admin.site.register(Form)
 admin.site.register(FormTags)
+admin.site.register(Link)
+admin.site.register(Content)

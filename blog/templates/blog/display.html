@@ -14,9 +14,10 @@
 	fetch("{{url}}")
 	.then((resp) => resp.json())
 	.then(function(data){
-		document.getElementById("frame").src = '/static'+ data.file;
+		var src = `http://172.20.57.135:88/static${data.file}`;
+		console.log(src);
+		document.getElementById("frame").src = src;
 	})
-
 </script>
 
 {% endblock %}

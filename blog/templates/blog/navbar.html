@@ -2,10 +2,10 @@
 
 <style type="text/css">
   nav{
-    background-color:#2e612f !important;
-    border:3px solid  #8d8299;
-    border-bottom-right-radius:25px;
-    border-bottom-left-radius:25px;
+    background-color:#526927 !important;
+    border:3px solid  white;
+    border-bottom-right-radius:15px;
+    border-bottom-left-radius:15px;
   }
   .white{
     color:#fff !important;
@@ -35,9 +35,9 @@
     font-family: Rockwell, "Courier New", Courier, Georgia,
                  Times, "Times New Roman", serif;
     text-decoration: underline;
+    font-weight: 600;
   }
 </style>
-
 <div id = "navDiv">
   <nav id = "nav" class="navbar navbar-expand-lg navbar-light shadow mx-auto">
   <a id = 'brand' class="navbar-brand white" href="#" style="text-decoration: underline;"><img id='brand' src="{% static 'images/logo4.png' %}" style=></a>
@@ -50,19 +50,19 @@
         <a class="nav-link white" href="{% url 'blog:home' %}">Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link white" href="{% url 'blog:methods2'%}">Methodology</a>
+        <a class="nav-link white" href="{% url 'blog:methods'%}">Methodology</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link white" href="{% url 'blog:training' %}">CPFD Resources</a>
+        <a class="nav-link white" href="{% url 'blog:resources' %}">CPFD Resources</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link white" href="{% url 'blog:methods2'%}">Training</a>
+        <a class="nav-link white" href="{% url 'blog:training'%}">Training</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle white" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="{% url 'blog:links' %}">Forms</a>
+          <a class="dropdown-item" href="{% url 'blog:files' %}">Forms</a>
           <a class="dropdown-item" href="{% url 'blog:tagDB' %}">Tags</a>
         </div>
       </li>
@@ -70,7 +70,7 @@
       <form class="form-inline" style="justify-content: center;">
         <input id="searchBar" class="form-control mr-sm-2" placeholder="Search..." aria-label="Search">
         <a id="searchRedirect">
-          <button type="button" onclick="searchSubmit()" id="searchBtn" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+          <button type="button" onclick="searchSubmit()" id="searchBtn" class="btn btn-info my-2 my-sm-0">Search</button>
         </a>
       </form>
   </div>
@@ -79,7 +79,7 @@
 <script type="text/javascript">
   function searchSubmit(){
     var form = document.getElementById('searchBar').value;
-    var url = `http://127.0.0.1:8080/search/${form}`;
+    var url = `http://172.20.57.135:88/search/${form}/`;
     document.getElementById('searchRedirect').href = url;
   }
   

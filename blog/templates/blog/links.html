@@ -1,0 +1,153 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	.custom{
+		width: auto;
+		justify-content: center;
+		display: flex;
+		background-color: #63802d;
+		color:white;
+		border-radius: 15px;
+		border-color: #fff;
+		border-width: 2px;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
+	}
+	.head > h3{
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+    	text-decoration: underline;
+	}
+	.main{
+		width:90%;
+		display: flex;
+		justify-content: center;
+		border-radius: 25px;
+		border-color: #2e612f;
+		border-width: 2px;
+	}	
+	th, .header{
+		background-color: #63802d;
+		color: white;
+		text-align: center;
+		border: 1px black;
+	}
+	td {
+		text-align: center;
+	}
+</style>
+<hr>
+<div class="row" style="line-height: 70%">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body head shadow">
+			<h3>Quick Links</h3>
+		</div>
+	</div>
+</div>
+<br>
+<div class="main card card-body mx-auto shadow">
+	<div class="card card-body">
+		<div style="flex:7">
+			<input id="search-input" class="form-control" type="text" placeholder="Search links...">
+		</div>
+	</div>
+	<table class="table table-striped">
+		<tr>
+			<th data-column="title" data-order="desc">Name &#9650</th>
+			<td class = "header">Visit</td>
+			<th data-column="date" data-order="desc">Date Added &#9650</th>
+		</tr>
+		<tbody id='table'>
+			
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+	var myData = null;
+	var listSnapshot = null;
+	startBuild(); 
+
+	function startBuild(){
+		var url = "http://172.20.57.135:88/api/link-list/"
+		fetch(url)
+		.then((resp) => resp.json())
+		.then(function(data) {
+			myData = data;
+			buildTable(data);
+		})
+	}
+
+	function buildTable(data){
+		var table = document.getElementById('table');
+		listSnapshot = data;
+		table.innerHTML = '';
+		for(var i = 0; i<data.length;i++){
+			var row = `
+				<tr id="data-row-${i}">
+					<td>${data[i].title}</td>
+					<td>
+						<a href=${data[i].url}>
+							<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-up-right-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.879 10.828a.5.5 0 1 1-.707-.707l4.096-4.096H6.5a.5.5 0 0 1 0-1h3.975a.5.5 0 0 1 .5.5V9.5a.5.5 0 0 1-1 0V6.732l-4.096 4.096z"/>
+							</svg>
+						</a>
+					</td>
+					<td>${data[i].date}</td>
+				</tr>
+			`;
+			table.innerHTML += row;
+		}
+	}
+
+	function searchTable(value, data){
+		var filteredData = []
+		for (var i =0; i < data.length; i++){
+			value = value.toLowerCase()
+			var title = data[i].title.toLowerCase()
+			if (title.includes(value)){
+				filteredData.push(data[i]);
+			}
+		}
+		return filteredData
+	}
+
+	let items = document.getElementsByTagName('th')
+	for (let i of items){
+		i.addEventListener('click', function(e){
+			e.preventDefault();
+			var column = e.target.dataset.column;
+			var order = e.target.dataset.order;
+			var text = e.target.innerHTML;
+			var data = listSnapshot;
+			text = text.substring(0, text.length - 1);
+
+			if(order == 'desc'){
+				e.target.dataset.order = "asc";
+				text += '&#9660';
+				data = data.sort((a,b) => a[column] > b[column] ? 1:-1);
+			} else{
+				e.target.dataset.order = "desc";
+				text += '&#9650';
+				data = data.sort((a,b) => a[column] < b[column] ? 1:-1);
+			}
+			e.target.innerHTML = text;
+			buildTable(data);
+		})
+	}
+
+	var type = document.getElementById('search-input');
+	type.addEventListener('keyup', function(e){
+		e.preventDefault();
+		var value = e.target.value
+		var data = searchTable(value, myData);
+		buildTable(data);
+	});
+</script>
+
+{% endblock %}

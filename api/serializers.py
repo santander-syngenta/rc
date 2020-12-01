@@ -12,3 +12,9 @@ class TagSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = FormTags
 		fields = '__all__'
+
+class LinkSerializer(serializers.ModelSerializer):
+	serializers.DateField(format='%b %d, %Y', input_formats=['%b %d, %Y'])
+	class Meta:
+		model = Link
+		fields = '__all__'

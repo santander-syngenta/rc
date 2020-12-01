@@ -12,30 +12,41 @@ from api.serializers import *
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 
+def login(request):
+	return render(request, 'blog/home.html')
+
 def home(request):
 	return render(request, 'blog/home.html')
 
 
-def methods2(request):
-	return	render(request,'blog/methods2.html')
+def methods(request):
+	return	render(request,'blog/methods.html')
 
 
 def training(request):
 	return render(request, 'blog/training.html')
 
 
-def links(request):
-	return render(request, 'blog/link.html')
+def files(request):
+	return render(request, 'blog/files.html')
 
-@xframe_options_exempt
+
 def display(request, pk):
-	url = 'http://127.0.0.1:8080/api/form-detail/' + pk + '/'
+	url = 'http://172.20.57.135:88/api/form-detail/' + pk + '/'
 	context = {'url':url}
 	return render(request, 'blog/display.html', context)
 
 
 def tagDB(request):
 	return render(request,'blog/tag.html')
+
+
+def resources(request):
+	return render(request, 'blog/resources.html')
+
+
+def links(request):
+	return render(request, 'blog/links.html')
 
 
 def blog(request):
@@ -45,6 +56,10 @@ def blog(request):
 def search(request, pk):
 	context = {'pk':pk}
 	return render(request, 'blog/search.html', context)
+
+
+def forms(request):
+	return render(request, 'blog/forms.html')
 
 
 

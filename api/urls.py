@@ -1,5 +1,6 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from . import views
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
 	path('', views.apiOverview, name='api-overview'),
@@ -17,4 +18,12 @@ urlpatterns = [
 	path('form-update/<str:pk>/', views.formUpdate, name='form-update'),
 
 	path('uploadForm/', views.uploadForm, name = 'uploadForm'),
+
+	path('link-list/', views.linkList, name='link-list'),
+	path('link-detail/<str:pk>/', views.linkDetail, name='link-detail'),
+	path('link-create/', views.linkCreate, name='link-create'),
+	path('link-delete/<str:pk>/', views.linkDelete, name='link-delete'),
+	path('link-update/<str:pk>/', views.linkUpdate, name='link-update'),
+
+	path('upload/', TemplateView.as_view(template_name='api/upload.html'), name='upload-home'),
 ]

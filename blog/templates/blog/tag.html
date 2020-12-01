@@ -112,7 +112,7 @@
 				<input id="search-input" class="form-control" type="text" placeholder="Begin typing to search through tags!">
 			</div>
 			<div style="flex:1; justify-content: right; padding-left:20px;">
-				<button id = 'newTag' onClick="openForm2()" class="btn btn-warning">Add New File</button>
+				<button id = 'newTag' onClick="openForm2()" class="btn btn-warning">Add New Tag</button>
 			</div>			
 		</div>
 	</div>
@@ -229,7 +229,7 @@
 		submitBtn = document.getElementById('submitTag');
 		submitBtn.addEventListener('click', function(e){
 			var name = document.getElementById('name').value;
-			var url = `http://127.0.0.1:8080/api/tag-create/`
+			var url = `http://172.20.57.135:88/api/tag-create/`
 			console.log(name, url);
 			fetch(url, {
 				method:'POST',
@@ -250,7 +250,7 @@
   		submitBtn.addEventListener('click',function(e){
   			e.preventDefault();
   			var title = document.getElementById('titleUpdate').value;
-  			var url = `http://127.0.0.1:8080/api/tag-update/${activeItem.id}/`;
+  			var url = `http://172.20.57.135:88/api/tag-update/${activeItem.id}/`;
   			console.log(title, url);
   			fetch(url, {
   				method:'POST',
@@ -287,7 +287,7 @@
 	}
 
 	function startBuild(){
-		var url = "http://127.0.0.1:8080/api/tag-list/"
+		var url = "http://172.20.57.135:88/api/tag-list/"
 		fetch(url)
 		.then((resp) => resp.json())
 		.then(function(data) {
@@ -298,7 +298,7 @@
 
 	function deleteItem(item){
 		console.log("Deleting: ", item);
-		var url = `http://127.0.0.1:8080/api/tag-delete/${item.id}/`
+		var url = `http://172.20.57.135:88/api/tag-delete/${item.id}/`
 		fetch(url, {
 			method:'DELETE',
 			headers:{
