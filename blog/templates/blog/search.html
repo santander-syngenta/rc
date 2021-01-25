@@ -3,6 +3,9 @@
 {% block content %}
 
 <style type="text/css">
+	body{
+		overflow-y: scroll;
+	}
 	.custom{
 		width: auto;
 		background-color: #fff;
@@ -38,7 +41,9 @@
 	a {
 		color:black !important;
 	}
-	{box-sizing: border-box;}
+	svg{
+		color: #007bff
+	}
 </style>
 </br>
 <div class="row">
@@ -63,10 +68,7 @@
 		<tr>
 			<th data-column="title" data-order="desc">Document Title &#9650</th>
 			<th data-column="date" data-order="desc">Date Added &#9650</th>
-			<td class = "header">Tags</td>
-			<td class = "header">Download</td>
-			<td class = "header">Update Title</td>
-			<td class = "header">Delete</td>
+			<td class = "header">Preview/Link</td>
 		</tr>
 
 		<tbody id="myTable">
@@ -96,23 +98,8 @@
 	var activeItem = null;
 	var html = null;
 	var listSnapshot = [];
-	var myData = {}
-
-	var tagNames = {};
-	getTagNames();
-	function getTagNames(){
-		var url = 'http://172.20.57.135:88/api/tag-list/'
-		fetch(url)
-		.then((resp) => resp.json())
-		.then(function(data){
-			for (var i in data){
-				var id = data[i].id.toString();
-				var name = data[i].name;
-				tagNames[id] = name;
-			}
-			console.log(tagNames);
-		})
-	}
+	var myData = {};
+	var bigData = null;
 
 	function buildTable(data){
 		var table = document.getElementById('myTable');
@@ -123,38 +110,30 @@
 			} catch(err){
 
 			}
-			var src = "http://172.20.57.135:88/static" + data[i].file
-			var tags = data[i].tag;
-			names= [];
-			for (var j in tags){
-				names.push(tagNames[tags[j]]);
+			if (data[i].file != null) {
+				var src = "http://172.20.57.135:88/static" + data[i].file
+				var svg = `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-eye" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.134 13.134 0 0 0 1.66 2.043C4.12 11.332 5.88 12.5 8 12.5c2.12 0 3.879-1.168 5.168-2.457A13.134 13.134 0 0 0 14.828 8a13.133 13.133 0 0 0-1.66-2.043C11.879 4.668 10.119 3.5 8 3.5c-2.12 0-3.879 1.168-5.168 2.457A13.133 13.133 0 0 0 1.172 8z"/>
+							<path fill-rule="evenodd" d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+							</svg>`
+			} else {
+				var src = data[i].url
+				var svg = `<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-up-right-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.879 10.828a.5.5 0 1 1-.707-.707l4.096-4.096H6.5a.5.5 0 0 1 0-1h3.975a.5.5 0 0 1 .5.5V9.5a.5.5 0 0 1-1 0V6.732l-4.096 4.096z"/>
+							</svg>`
 			}
 			var row = `
 				<tr id = "data-row-${i}">
 					<td>${data[i].title}</td>
 					<td>${data[i].date}</td>
-					<td>${names}</td>
-					<td><a href=${src}>Download</a></td>
-					<td><button class="btn btn-sm btn-outline-info edit">Edit</button></td>
-					<td><button class="btn btn-sm btn-outline-danger delete">Delete</button></td>
+					<td>
+						<a id="svg" href=${src}>
+							${svg}
+						</a>
+					</td>
 				</tr>
 			`
 			table.innerHTML += row
-		}
-		for (var i=0; i < data.length; i++){
-			editBtn = document.getElementsByClassName('edit')[i];
-			deleteBtn = document.getElementsByClassName('delete')[i];
-
-			editBtn.addEventListener('click',(function(item){
-				return function(){
-					editItem(item);
-				}
-			})(myData[i]));
-			deleteBtn.addEventListener('click', (function(item){
-				return function(){
-					deleteItem(item);
-				}
-			})(myData[i]));
 		}
 		if (listSnapshot.length > data.length){
 			for (var i = data.length; i < listSnapshot.length; i++){
@@ -162,12 +141,6 @@
 			}
 		}
 		listSnapshot = data 
-	}
-
-	function editItem(item){
-		activeItem = item;
-		document.getElementById('titleUpdate').value = activeItem.title;
-		openForm();
 	}
 
 	function searchTable(value, data){
@@ -184,27 +157,33 @@
 	}
 
 	function startBuild(){
-		var url = "http://172.20.57.135:88/api/form-list/"
+		var url = "http://172.20.57.135:88/api/form-list/";
+		var url2 = "http://172.20.57.135:88/api/link-list/";
+		var url3 = "http://172.20.57.135:88/api/content-list/";
+		var url4 = "http://172.20.57.135:88/api/form2-list/";
+
 		fetch(url)
 		.then((resp) => resp.json())
 		.then(function(data) {
-			myData = searchTable("{{pk}}", data);
-			buildTable(myData);
+			bigData = data;
+			fetch(url2)
+			.then((resp2) => resp2.json())
+			.then(function(data2) {
+				bigData = bigData.concat(data2);
+				fetch(url3)
+				.then((resp3) => resp3.json())
+				.then(function(data3) {
+					bigData = bigData.concat(data3);
+					fetch(url4)
+					.then((resp4) => resp4.json())
+					.then(function(data4) {
+						bigData = bigData.concat(data4);
+						myData = searchTable("{{pk}}", bigData);
+						buildTable(myData);
+					})
+				})
+			})
 		});
-	}
-
-	function deleteItem(item){
-		console.log("Deleting: ", item);
-		var url = `http://172.20.57.135:88/api/form-delete/${item.id}/`
-		fetch(url, {
-			method:'DELETE',
-			headers:{
-				'Content-type':'application/json',
-				'X-CSRFToken':csrftoken,
-			}
-		}).then(function(response){
-			startBuild();
-		})
 	}
 
 	startBuild();
@@ -234,7 +213,7 @@
 	var type = document.getElementById('search-input');
 	type.addEventListener('keyup', function(e){
 		var value = e.target.value
-		var data = searchTable(value, myData);
+		var data = searchTable(value, bigData);
 		buildTable(data);
 	});
 </script>

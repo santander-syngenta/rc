@@ -1,0 +1,200 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	.custom{
+		width: auto;
+		justify-content: center;
+		display: flex;
+		background-color: #526927;
+		color:white;
+		border-radius: 15px;
+		border-color: #fff;
+		border-width: 2px;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
+	}
+	.head > h3{
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+    	text-decoration: underline;
+	}
+	.head > p{
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+	}
+	table{
+		width:100%;
+	}
+	.custom1{
+		width: 90%;
+		display: flex;
+		justify-content: center;
+		border-radius: 25px;
+		border-color: #2e612f;
+		border-width: 2px;
+	}
+	th, .header{
+		background-color: #829986;
+		color: white;
+		text-align: center;
+		border: 1px black;
+	}
+	td{
+		justify-content: center;
+		text-align: center;
+	}
+	td > input{
+		width: 100%; 
+    	box-sizing: border-box;
+    	-webkit-box-sizing:border-box;
+    	-moz-box-sizing: border-box;
+	}
+	body{
+		overflow-x: scroll;
+	}
+	#message{
+		text-align: center;
+		color: red;
+	}
+</style>
+<hr>
+<div class="row" style="line-height: 70%">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body head shadow" style="line-height: 70%">
+			<h3>GPS Conversion Calculator</h3>
+			<p>Convert Coordinates from Degree/Minutes/Seconds to Decimal Format for ARM Entry</p>
+		</div>
+	</div>
+</div>
+<br>
+<div class="card card-body custom1 mx-auto shadow"> 
+	<table id="dataTable">
+		<tr>
+			<th></th>
+			<th>Degrees</th>
+			<th>Minutes</th>
+			<th>Seconds</th>
+		</tr>
+		<tr>
+			<td data-toggle="tooltip" data-placement="top" title="In the US, the Latitude degrees should be between 24 (Key West) and 45 (Northern Maine)">Latitude</td>
+			<td data-toggle="tooltip" data-placement="top" title="In the US, the Latitude degrees should be between 24 (Key West) and 45 (Northern Maine)"><input type="text" name="latDegree"></td>
+			<td data-toggle="tooltip" data-placement="top" title="Minutes should never be more than 60!"><input type="text" name="latMin"></td>
+			<td data-toggle="tooltip" data-placement="top" title="Seconds should never be more than 60!"><input type="text" name="latSec"></td>
+		</tr>
+		<tr>
+			<td data-toggle="tooltip" data-placement="top" title="In the US, the Longitude degrees should be between -69 (East Coast) and -122 (West Coast)">Longitude</td>
+			<td data-toggle="tooltip" data-placement="top" title="In the US, the Longitude degrees should be between -69 (East Coast) and -122 (West Coast)"><input type="text" name="longDegree"></td>
+			<td data-toggle="tooltip" data-placement="top" title="Minutes should never be more than 60!"><input type="text" name="longMin"></td>
+			<td data-toggle="tooltip" data-placement="top" title="Seconds should never be more than 60!"><input type="text" name="longSec"></td>
+		</tr>
+	</table>
+	<button type="button" class="btn btn-info" onclick="getInput()">Calculate</button>
+</div>
+<br>
+<div id="newBuild" class="card card-body custom1 mx-auto shadow">
+	
+</div>
+<script type="text/javascript">
+	var table = document.getElementById('dataTable')
+	var newDiv = document.getElementById('newBuild')
+	newDiv.style.display = 'none';
+	output = []
+	function getInput(){
+		for (var i=0; i < table.rows.length; i++){
+			row = []
+			for (var j=0; j < table.rows[i].cells.length; j++){
+				if (table.rows[i].cells[j].children[0] != undefined){
+					if (i != 0 && j != 0){
+						row.push(parseInt(table.rows[i].cells[j].children[0].value));
+					}
+				}
+			}
+			if (i != 0){
+				output.push(row);
+			}
+		}
+		console.log(output)
+		validate()
+	}
+
+	function validate(){
+		newDiv.innerHTML = '';
+		error = false;
+		cause = null;
+		for (var i = 0; i<output.length; i++){
+			for (var j=0; j<output[i].length; j++){
+				if (i === 0 && j === 0){
+					if (output[i][j] < 24 || output[i][j] > 45){
+						error = true;
+						cause = 'Latitude degrees out of range';
+					}
+				}
+				if (i === 1 && j === 0){
+					if (output[i][j] >= 0){
+						output[i][j] = output[i][j] * -1;
+					}
+					if (output[i][j] < -122 || output[i][j] > -69){
+						error = true;
+						cause = 'Longitude degrees out of range';
+					}
+				}
+				if (j >= 1){
+					if(output[i][j] > 60 || output[i][j] < 0){
+						if (j === 1){
+							error = true;
+							cause = 'Minutes out of range';
+						}
+						if (j === 2){
+							error = true;
+							cause = 'Seconds out of range';
+						}
+					}
+				}
+			}
+		}
+		if (error === true){
+			displayError(cause);
+		} else {
+			calculate(output);
+		}
+		output = [];
+	}
+
+
+	function displayError(cause){
+		newDiv.style.display = 'block';
+		var message = `<h3 id="message">${cause}</h3>`
+		newDiv.innerHTML += message;
+	}
+
+	function calculate(){
+		newDiv.style.display = 'block';
+		longARM = ((((output[1][2]/60)+output[1][1])/60) - output[1][0])*-1; 
+		latARM = (((output[0][2]/60)+output[0][1])/60) + output[0][0];
+		var outputTable = `
+			<table>
+				<tr>
+					<th>Latitude</th>
+					<th>Longitude</th>
+				</tr>
+				<tr>
+					<td>${latARM.toFixed(6)}</td>
+					<td>${longARM.toFixed(6)}</td>
+				</tr>
+			</table>
+		`
+		newDiv.innerHTML += outputTable;
+	}
+</script>
+<script type="text/javascript">
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
+
+{% endblock %}

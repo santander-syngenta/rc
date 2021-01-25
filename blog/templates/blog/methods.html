@@ -50,7 +50,7 @@
 	span > h3{
 		font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
 		text-decoration: underline;
-		color: #1a381b;
+		color: black;
 		padding-left:2rem;
 	}
 	/* Track */
@@ -62,12 +62,19 @@
 	.style-15::-webkit-scrollbar-thumb
 	{
 		border-radius:5px;
-		background-color: #418c42;	
+		background-color: #526927;	
 		background-image: -webkit-linear-gradient(45deg,rgba(255, 255, 255, .2) 25%, transparent 25%,transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
 	}
 	.style-15::-webkit-scrollbar-track {
-    	box-shadow: inset 0 0 10px 10px #8d8299;
-    	border: solid 3px transparent;
+    	box-shadow: inset 0 0 10px 10px #d5dec5;
+    	border: solid 5px transparent;
+	}
+	.doc{
+		display:inline-block;
+		border:.5px solid black;
+		text-align:center;
+		background-color:#fff;
+		margin:4px;
 	}
 </style>
 <hr>
@@ -132,6 +139,8 @@
 				}
 			}
 		}
+		tags = [5,4,6,3];
+		tagTitles = ['Insect Control', 'Disease Control', 'Weed Control', 'Digital Data Capture'];
 		console.log(tags, tagTitles);
 		for (var i = 0; i < tags.length; i++){
 			var main = document.getElementById('main');
@@ -159,11 +168,12 @@
 				var href1 = "http://172.20.57.135:88/display/" + list[i].id;
 				var src = "http://172.20.57.135:88/static" + list[i].file;
 				var type = src.type;
+				var date = new Date(list[i].date);
+				var adjusted = date.toDateString();
 				var title = `<span style="display:block; text-align:center"><a class="title" href=${href1}>${list[i].title}</a></span>`;
-				console.log(title);
-				var date = `<span style="display:block; text-align:center"><a class="date" href=${href1}>Uploaded: ${list[i].date}</a></span>`;
+				var date = `<span style="display:block; text-align:center"><a class="date" href=${href1}>Uploaded: ${adjusted.substr(adjusted.indexOf(' ') + 1)}</a></span>`;
 				var item = `
-					<div id="card mx-auto custom" style="display:inline-block">
+					<div class="doc">
 						<span><iframe class="iframe" id='file' src=${src}></iframe></span>
 						${title}
 						${date}
@@ -171,7 +181,7 @@
 				`;
 				wrapper.innerHTML += item;
 			} else {
-				console.log('Fail: ', tag, list[i])
+
 			}
 
 		}

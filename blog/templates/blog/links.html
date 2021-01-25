@@ -88,17 +88,19 @@
 		listSnapshot = data;
 		table.innerHTML = '';
 		for(var i = 0; i<data.length;i++){
+			var date = new Date(data[i].date);
+			var adjusted = date.toDateString();
 			var row = `
 				<tr id="data-row-${i}">
 					<td>${data[i].title}</td>
 					<td>
 						<a href=${data[i].url}>
-							<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-up-right-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-arrow-up-right-circle-fill" fill="DodgerBlue" xmlns="http://www.w3.org/2000/svg">
 							<path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.879 10.828a.5.5 0 1 1-.707-.707l4.096-4.096H6.5a.5.5 0 0 1 0-1h3.975a.5.5 0 0 1 .5.5V9.5a.5.5 0 0 1-1 0V6.732l-4.096 4.096z"/>
 							</svg>
 						</a>
 					</td>
-					<td>${data[i].date}</td>
+					<td>${adjusted.substr(adjusted.indexOf(' ') + 1)}</td>
 				</tr>
 			`;
 			table.innerHTML += row;

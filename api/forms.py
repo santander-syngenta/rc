@@ -9,3 +9,17 @@ class upload(ModelForm):
 		model = Form
 		fields = '__all__'
 		exclude = ['date']
+
+
+class uploadTrainingContent(ModelForm):
+	class Meta:
+		model = Content
+		fields = '__all__'
+		exclude = ['date']
+
+
+class uploadResourceForm(ModelForm):
+	class Meta:
+		model = Form2
+		fields = '__all__'
+		exclude = ['date']

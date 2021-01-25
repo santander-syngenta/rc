@@ -22,12 +22,8 @@
 </style>
 <hr>
 <br>
+<br>
 <div class = "flex-container">
-	<a class="href shadow-lg" href="{% url 'blog:training' %}">
-		<span>
-			<img src="{% static 'images/train2.png' %}" class="img-fluid mx-auto d-block">
-		</span>
-	</a>
 	<a class="href shadow-lg" href="{% url 'blog:methods' %}">
 		<span>
 			<img src="{% static 'images/method2.png' %}" class="img-fluid mx-auto d-block">
@@ -35,9 +31,15 @@
 	</a>
 	<a class="href shadow-lg" href="{% url 'blog:resources' %}">
 		<span>
-			<img src="{% static 'images/links2.png' %}" class="img-fluid mx-auto d-block">
+			<img src="{% static 'images/resources.png' %}" class="img-fluid mx-auto d-block">
 		</span>
 	</a>
+	<a class="href shadow-lg" href="{% url 'blog:training' %}">
+		<span>
+			<img src="{% static 'images/learning.png' %}" class="img-fluid mx-auto d-block">
+		</span>
+	</a>
+	<hr>
 </div>
 <script type="text/javascript">
 	var navBar = document.getElementById('navDiv').innerHTML;
@@ -47,5 +49,6 @@
 		</div>`
 	document.getElementById('navDiv').innerHTML = newBar;
 	document.getElementById('home').remove();
+
 </script>
 {% endblock %}

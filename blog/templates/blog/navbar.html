@@ -37,6 +37,9 @@
     text-decoration: underline;
     font-weight: 600;
   }
+  #searchForm{
+    justify-content: center;
+  }
 </style>
 <div id = "navDiv">
   <nav id = "nav" class="navbar navbar-expand-lg navbar-light shadow mx-auto">
@@ -56,19 +59,11 @@
         <a class="nav-link white" href="{% url 'blog:resources' %}">CPFD Resources</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link white" href="{% url 'blog:training'%}">Training</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle white" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="{% url 'blog:files' %}">Forms</a>
-          <a class="dropdown-item" href="{% url 'blog:tagDB' %}">Tags</a>
-        </div>
+        <a class="nav-link white" href="{% url 'blog:training'%}">Learning</a>
       </li>
     </ul>
-      <form class="form-inline" style="justify-content: center;">
-        <input id="searchBar" class="form-control mr-sm-2" placeholder="Search..." aria-label="Search">
+      <form method="GET" action='' id="searchForm" class="form-inline">
+        <input type="search" id="searchBar" class="form-control mr-sm-2" placeholder="Type then click Search..." aria-label="Search">
         <a id="searchRedirect">
           <button type="button" onclick="searchSubmit()" id="searchBtn" class="btn btn-info my-2 my-sm-0">Search</button>
         </a>
@@ -80,7 +75,10 @@
   function searchSubmit(){
     var form = document.getElementById('searchBar').value;
     var url = `http://172.20.57.135:88/search/${form}/`;
-    document.getElementById('searchRedirect').href = url;
+    if (form != ''){
+      window.location.href = url;
+    } else {
+      window.location.href = 'http://172.20.57.135:88/search/%20/';
+    }
   }
-  
 </script>

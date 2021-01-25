@@ -12,3 +12,10 @@ class Answer(models.Model):
 	answer = models.TextField()
 	answered = models.DateTimeField(auto_now_add = True)
 
+
+class Announcement(models.Model):
+	headline = models.TextField()
+	body = models.TextField(null = True)
+	link = models.CharField(max_length = 200, null = True, blank = True)
+
+	

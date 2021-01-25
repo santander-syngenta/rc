@@ -1,0 +1,36 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	iframe {
+		border: 4px solid #fff;
+		outline: 4px solid #526927;
+	}
+</style>
+
+<br>
+<br>
+
+<div class="container">
+	<iframe id="vidFrame" width='100%' height='600px' frameborder='0'></iframe>
+	<hr>
+	<iframe id="presFrame" width='100%' height='600px' frameborder='0'></iframe>
+</div>
+
+
+<script type="text/javascript">
+	console.log("{{url}}")
+	fetch("{{url}}")
+	.then((resp) => resp.json())
+	.then(function(data){
+		console.log(data);
+		var src = `http://172.20.57.135:88/static${data.file}`;
+		var src2 = `http://172.20.57.135:88/static${data.file2}`;
+		console.log(src);
+		document.getElementById("presFrame").src = src;
+		document.getElementById("vidFrame").src = src2;
+	})
+</script>
+
+{% endblock %}

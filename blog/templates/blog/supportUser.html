@@ -1,0 +1,189 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+	body{
+		overflow-y: scroll;
+	}
+	.custom{
+		width: auto;
+		justify-content: center;
+		display: flex;
+		background-color: #526927;
+		color:white;
+		border-radius: 15px;
+		border-color: #fff;
+		border-width: 2px;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
+	}
+	.head > h3{
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+    	text-decoration: underline;
+	}
+	.head > p{
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+	}
+	table{
+		width:90%;
+	}
+	.custom1{
+		width: 90%;
+		display: flex;
+		justify-content: center;
+		border-radius: 25px;
+		border-color: #2e612f;
+		border-width: 2px;
+	}
+	th, .header{
+		background-color: #829986;
+		color: white;
+		text-align: center;
+		border: 1px black;
+	}
+	td {
+		text-align: center;
+	}
+	a {
+		color:black !important;
+	}
+	{box-sizing: border-box;}
+	th, .header{
+		background-color: #63802d;
+		color: white;
+		text-align: center;
+		border: 1px black;
+	}
+	td {
+		text-align: center;
+	}
+	#nowrapper{
+		word-wrap: break-word;
+		white-space: nowrap;
+	}
+</style>
+
+<hr>
+<div class="row">
+	<div class="column custom mx-auto">
+		<div class="custom card card-body shadow head">
+			<h2>Technical Support Contacts</h2>
+		</div>
+	</div>
+</div>
+<br/>
+<div class="card card-body custom1 mx-auto shadow">
+	<div class = "card card-body">
+		<div style="display: flex">
+			<div style="flex:7">
+				<input id="search-input" class="form-control" type="text" placeholder="Begin typing to a Name or Subject through contacts!">
+			</div>	
+		</div>
+	</div>
+
+	<table class="table table-striped">
+		<tr>
+			<th data-column="title" data-order="desc">Contact Name &#9650</th>
+			<td class = "header">Speciality</td>
+			<td class = "header">Email</td>
+			<td class = "header">Phone #</td>
+		</tr>
+
+		<tbody id="myTable">
+
+		</tbody>
+	</table>
+</div>	
+
+<script type="text/javascript">
+	var activeItem = null;
+	var html = null;
+	var listSnapshot = [];
+	var myData = null
+
+	function buildTable(data){
+		var table = document.getElementById('myTable');
+		table.innerHTML= ''
+		for (var i =0; i < data.length; i++) {
+			try{
+				document.getElementById(`data-row-${i}`).remove();
+			} catch(err){
+
+			}
+			var row = `
+				<tr id = "data-row-${i}">
+					<td id="nowrapper">${data[i].name}</td>
+					<td>${data[i].speciality}</td>
+					<td>${data[i].email}</td>
+					<td id="nowrapper">${data[i].number}</td>
+				</tr>
+			`
+			table.innerHTML += row
+		}
+		listSnapshot = data 
+	}
+
+	function searchTable(value, data){
+		var filteredData = []
+		for (var i =0; i < data.length; i++){
+			value = value.toLowerCase()
+			var title = data[i].name.toLowerCase()
+			var speciality = data[i].speciality.toLowerCase()
+			if (title.includes(value) || speciality.includes(value)){
+				filteredData.push(data[i]);
+			}
+		}
+
+		return filteredData
+	}
+
+	function startBuild(){
+		var url = "http://172.20.57.135:88/api/contact-list/"
+		fetch(url)
+		.then((resp) => resp.json())
+		.then(function(data) {
+			myData = data;
+			buildTable(myData);
+		});
+	}
+
+	startBuild();
+
+	let items = document.getElementsByTagName('th')
+	for (let i of items){
+		i.addEventListener('click', function(e){
+			var column = e.target.dataset.column;
+			var order = e.target.dataset.order;
+			var text = e.target.innerHTML;
+			text = text.substring(0, text.length - 1);
+			console.log(text);
+
+			if(order == 'desc'){
+				e.target.dataset.order = "asc";
+				text += '&#9660';
+				myData = myData.sort((a,b) => a[column] > b[column] ? 1:-1);
+			} else{
+				e.target.dataset.order = "desc";
+				text += '&#9650';
+				myData = myData.sort((a,b) => a[column] < b[column] ? 1:-1);
+			}
+			e.target.innerHTML = text;
+			buildTable(myData);
+		})
+	}
+
+	var type = document.getElementById('search-input');
+	type.addEventListener('keyup', function(e){
+		var value = e.target.value
+		var data = searchTable(value, myData);
+		buildTable(data);
+	});
+</script>
+
+{% endblock %}

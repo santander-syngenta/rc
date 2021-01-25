@@ -1,0 +1,147 @@
+{% extends 'blog/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+	body{
+		overflow-x: hidden;
+	}
+	.flex-container{
+		display: inline-flex;
+		margin-left: 3%;
+		margin-right: 3%;
+	}
+	.href{
+		border: 3px solid white;
+		outline: 3px solid #829986;
+		padding-left:0;
+		margin-bottom:1em;
+		height: auto;
+		max-width: 90%;
+	}
+	
+	.slide{
+		border: 3px solid white;
+		outline: 3px solid #829986;
+		height: auto;
+		width: auto;
+		max-height: 50%;
+		max-width: 50%;
+		margin-top:1em;
+	}
+	.carousel {
+		width: 60%;
+		height: 60%;
+	}
+	h6{
+		font-weight: 700;
+		color:black;
+		font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+	}
+	p{
+		color:black;
+		font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
+	}
+	.topics{
+		margin-left: 5%;
+	}
+	.indicator{
+		background-color: #526927 !important;
+	}
+	.carousel-control-prev-icon,
+	.carousel-control-next-icon {
+	  height: 100px;
+	  width: 100px;
+	  background-size: 100%, 100%;
+	  background-image: none;
+	}
+	.carousel-control-next-icon:after
+	{
+	  content: '>';
+	  font-size: 55px;
+	  color: #526927;
+	}
+	.carousel-control-prev-icon:after {
+	  content: '<';
+	  font-size: 55px;
+	  color: #526927;
+	}
+	.carousel-caption{
+		top: 50%;
+		transform: translateY(-50%);
+		bottom: initial;
+	}
+	.carousel-item{
+		-webkit-transform-style: preserve-3d;
+		-moz-transform-style: preserve-3d;
+		transform-style: preserve-3d;
+	}
+</style>
+<hr>
+<div class = "flex-container">
+	<div id="carouselExampleIndicators" class="carousel slide shadow-lg" data-ride="carousel">
+		<ol class="carousel-indicators" id = "indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="indicator active"></li>
+		</ol>
+		<div class="carousel-inner" id="inner">
+			<div class="carousel-item active">
+				<img class="d-block w-100" src="{% static 'images/yellow.png' %}" alt="First slide">
+				<div class="carousel-caption d-none d-md-block">
+					<h6>Welcome to the New CPFD Resource Center</h6>
+					<p>The central location for all forms, links, and more...</p>
+				</div>
+			</div>
+		</div>
+		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon indicator2" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			<span class="carousel-control-next-icon indicator2" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+	<div class = "topics">
+		<a class="anchor" href="{% url 'blog:resources' %}">
+			<img class="href shadow-lg" src="{% static 'images/resources.png' %}" class="img-fluid mx-auto d-block">
+		</a>
+		<a class="anchor" href="{% url 'blog:methods' %}">
+			<img class="href shadow-lg" src="{% static 'images/method2.png' %}" class="img-fluid mx-auto d-block">
+		</a>
+		<a class="anchor" href="{% url 'blog:training' %}">
+			<img class="href shadow-lg" src="{% static 'images/learning.png' %}" class="img-fluid mx-auto d-block">
+		</a>
+	</div>
+</div>
+<script type="text/javascript">
+	var navBar = document.getElementById('navDiv').innerHTML;
+	var newBar = `
+		<div>
+			${navBar}
+		</div>`
+	document.getElementById('navDiv').innerHTML = newBar;
+	document.getElementById('home').remove();
+
+	var objs = JSON.parse("{{text}}".replace(/&quot;/g,'"'));
+	
+	var indicators = document.getElementById('indicators');
+	var inner = document.getElementById('inner');
+	for (var i in objs){
+		var id = parseInt(i) + 1;
+		indicators.innerHTML += `<li data-target="#carouselExampleIndicators" data-slide-to=${id} class="indicator"></li>`
+
+		var slide = `
+			<div class="carousel-item">
+				<img class="d-block w-100" src="{% static 'images/yellow.png' %}">
+				<div class="carousel-caption d-none d-md-block">
+					<a href="${objs[i].url}">
+						<h6>${objs[i].headline}</h6>
+					</a>
+					<p>${objs[i].body}</p>
+				</div>
+			</div>`;
+		inner.innerHTML += slide;
+	}
+	console.log("{{forms}}")
+</script>
+{% endblock %}

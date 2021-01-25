@@ -9,12 +9,24 @@
 		display:flex;
 		justify-content: center;
 	}
+	.container2{
+		width:40%;
+		justify-content: center;
+		display:flex;
+	}
 	.href{
 		justify-content: center;
 		margin-left: 30px;
 		margin-right: 30px;
 		border: 3px solid  white;
 		outline: 3px solid #829986;
+	}
+	.head{
+		padding-top:.25rem;
+		padding-left: 8rem;
+		padding-right: 8rem;
+		padding-bottom: 0rem;
+		text-align: center;
 	}
 	.custom{
 		width: auto;
@@ -35,8 +47,7 @@
 		text-align: center;
 	}
 	h3{
-    	font-family: Rockwell, "Courier New", Courier, Georgia,
-                 Times, "Times New Roman", serif;
+    	font-family: Rockwell, "Courier New", Courier, Georgia, Times, "Times New Roman", serif;
     	text-decoration: underline;
 	}
 </style>
@@ -63,5 +74,12 @@
 	</a>
 </div>
 <br>
-
+<div class="container2 mx-auto">
+	<a class="href shadow" href="{% url 'blog:support' %}">
+		<span>
+			<img src = "{% static 'images/technicalsupport.png' %}" class = "img img-fluid mx-auto d-block">
+		</span>
+	</a>
+</div>
+<br>
 {% endblock %}

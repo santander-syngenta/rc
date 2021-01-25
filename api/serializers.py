@@ -18,3 +18,30 @@ class LinkSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Link
 		fields = '__all__'
+
+
+class ContentSerializer(serializers.ModelSerializer):
+	serializers.DateField(format='%b %d, %Y', input_formats=['%b %d, %Y',])
+	class Meta:
+		model = Content
+		fields = '__all__'
+
+
+class SubjectSerializer(serializers.ModelSerializer):
+	class Meta:
+		model  = Subject
+		fields = '__all__'
+
+
+class Form2Serializer(serializers.ModelSerializer):
+	serializers.DateField(format='%b %d, %Y', input_formats=['%b %d, %Y',])
+	class Meta:
+		model = Form2
+		fields = '__all__'
+
+
+class ContactSerializer(serializers.ModelSerializer):
+	serializers.DateField(format='%b %d, %Y', input_formats=['%b %d, %Y',])
+	class Meta:
+		model = Contact
+		fields = '__all__'

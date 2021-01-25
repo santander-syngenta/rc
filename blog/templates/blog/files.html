@@ -3,6 +3,9 @@
 {% block content %}
 
 <style type="text/css">
+	body{
+		overflow-y: scroll;
+	}
 	.custom{
 		width: auto;
 		background-color: #fff;
@@ -106,11 +109,11 @@
 	}
 </style>
 
-</br>
+<hr>
 <div class="row">
 	<div class="column custom mx-auto">
 		<div class="custom card card-body head shadow">
-			<h2>File Search, Update, & Delete</h2>
+			<h2>Methodology Search, Update, & Delete</h2>
 		</div>
 	</div>
 </div>
@@ -209,10 +212,12 @@
 			for (var j in tags){
 				names.push(tagNames[tags[j]]);
 			}
+			var date = new Date(data[i].date);
+			var adjusted = date.toDateString();
 			var row = `
 				<tr id = "data-row-${i}">
 					<td>${data[i].title}</td>
-					<td>${data[i].date}</td>
+					<td>${adjusted.substr(adjusted.indexOf(' ') + 1)}</td>
 					<td>${names}</td>
 					<td>
 						<a id="svg" href=${src}>
